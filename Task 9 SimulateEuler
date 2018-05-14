@@ -1,0 +1,46 @@
+function  [xhatout,t] = SimulateEuler(A, B, C, D, K, LL, t, x0)
+len = length(t);
+y = zeros(1,len);
+xout = zeros(3,len);
+xout(:, 1) = x0;
+x = x0;
+
+ycorr = zeros(1,len);
+xhatout = zeros(3,len);
+xhatout(:, 1) = x0;
+xhat = x0;
+
+u(1) = -K(1) * xhat(1) - K(2) * xhat(2);
+y(1) = C(1) * x(1) + C(2) * x(2) + C(3) * x(3) + D(1) * u(1);
+
+for idx = 2:len
+    u(idx) = -K(1) * xhat(1) - K(2) * xhat(2) - K(3) * xhat(3);
+    h = t(idx) - t(idx-1);
+    
+    xdot(1) = A(1,1) * x(1) + A(1,2) * x(2) + B(1) * u(idx);
+    xdot(2) = A(2,1) * x(1) + A(2,2) * x(2) + B(2) * u(idx);
+    
+    xdot(3) = B(3) * u(idx);
+    
+    x(1) = x(1) + h * xdot(1);
+    x(2) = x(2) + h * xdot(2);
+    x(3) = x(3) + h * xdot(3);
+    
+    xout(:,idx) = x;
+    y(idx) = C(1) * x(1) + C(2) * x(2) + C(3) * x(3) + D(1) * u(idx);
+    
+    %%--------------------------------------------------%%
+    
+    ycorrect = (y(idx) - C(1) * xhat(1) - C(2) * xhat(2) - C(3) * xhat(3));
+    
+    xhatdot(1) = A(1,1) * xhat(1) + A(1,2) * xhat(2) + B(1) * u(idx) + ycorrect * LL(1);
+    xhatdot(2) = A(2,1) * xhat(1) + A(2,2) * xhat(2) + B(2) * u(idx) + ycorrect * LL(2);
+    xhatdot(3) = A(3,1) * xhat(1) + A(3,2) * xhat(2) + B(3) * u(idx);
+    
+    xhat(1) = xhat(1) + h * xhatdot(1);
+    xhat(2) = xhat(2) + h * xhatdot(2);
+    xhat(3) = xhat(3) + h * xhatdot(3);
+    
+    xhatout(:,idx) = xhat;
+    
+end
