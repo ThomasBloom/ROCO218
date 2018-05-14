@@ -1,0 +1,18 @@
+double m = 0.314;
+double g = 9.8;
+double l = 0.6400;
+double p = 0.1393;
+double d = 0.05;
+double P = 0.0194;
+
+double A[3][3] = {{0, 1, 0}, {-((m*g*l)/p), (-d/p), 0},  {0, 0, 0}};
+double B[3] = {((m*l)/p), (-(d*m*l)/P), 1};
+double C[3] = {1, 0, 0};
+
+// ENTER YOUR VALUES FOR THE SFC GAINS HERE
+// SFC gains 
+double K[3] = {-18.6235, -9.8294, 47.8145};//{59.4146, 13.6288, -51.7991};
+
+// ENTER YOUR VALUES FOR THE OBSERVER GAINS HERE
+// observer gain just for theta and thetadot
+double L[2] = {41.6411, -29.0721};
