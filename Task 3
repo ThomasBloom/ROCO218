@@ -1,0 +1,32 @@
+clear all
+clc
+close all
+
+l = 0.64;
+m = 0.314;
+u = 0.05;
+g = 9.81;
+I = 0;
+L = l^2;
+p = I + (m * L);
+
+A = [0 1; ((m*g*l)/p) (-u/p);];
+B = [((m*l)/p); ((-u*m*l)/(p^2));];
+C = [1 0;];
+D = 0;
+
+sys = ss(A,B,C,D);
+display(sys);
+
+CA = C*A;
+MXo = [C; CA;]
+rank(MXo)
+%%%%%%%%%%%% Rank 2 therefore observable %%%%%%%%%%%%
+
+AB = A*B;
+MXc = [B AB;]
+rank(MXc)
+%%%%%%%%%%%% Rank 2 therefore controllable %%%%%%%%%%%%
+
+eig(A)
+%%%%%%%%%%%% Inclues a +ve eigenvalue, therefore unstable %%%%%%%%%%%%
